@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #cd5d5d;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            margin-top: 100px;
+        }
+        #mob{
+            
+            height: 400px;
+            width: 300px;
+            background-color: #eacece;
+            border-radius: 25px;
+        }
+        #in{
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="container">
+        <H1>WEATHER DETECTION APP </H1>
+        <div id="mob">
+            <input type="text" name="" id="in" placeholder="enter your location">
+            <button id="loc" onclick="getdet()">get data</button> <!-- Added onclick -->
+            <h3>RESULT'S</h3>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function getdet() {
+            let inp = document.querySelector("#in");
+            let dis = document.querySelector("#result");
+            let key = "3f2abac3e0d04633950191346252601";
+            let location = inp.value;
+            let url = `http://api.weatherapi.com/v1/current.json?key=${key}&q=${location}&aqi=yes`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        dis.innerHTML = `The provided location does not match.`;
+                    } else {
+                        let same = `Location: ${data.location.name}<br>Weather: ${data.current.condition.text}<br>Temperature: ${data.current.temp_c}°C<br>Air Quality: ${data.current.air_quality.pm2_5} µg/m³`;
+                        dis.innerHTML = same;
+                    }
+                })
+                .catch(error => {
+                    dis.innerHTML = `The server error is generated.`;
+                });
+        }
+    </script>
+    
+</body>
+</html>
